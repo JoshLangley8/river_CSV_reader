@@ -1,8 +1,8 @@
 import pandas as pd
 import os
 
-
 months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
 class CSVDataManipulator:
     def __init__(self, file_path):
         self.df = pd.read_csv(file_path)
@@ -22,12 +22,12 @@ class CSVDataManipulator:
         mean_values = numerical_columns.mean()
         return mean_values
 
-    def calculate_max(self,data):
+    def calculate_max(self, data):
         numerical_columns = data.select_dtypes(include='number')
         max_values = numerical_columns.max()
         return max_values
 
-    def calculate_min(self,data):
+    def calculate_min(self, data):
         numerical_columns = data.select_dtypes(include='number')
         min_values = numerical_columns.min()
         return min_values
@@ -35,38 +35,84 @@ class CSVDataManipulator:
     def save_to_csv(self, data, output_path):
         data.to_csv(output_path, index=False)
 
-    def calculate_and_save_mean_for_each_month(self, output_directory):
-        # Ensure the output directory exists
-        os.makedirs(output_directory, exist_ok=True)
+    def calculate_and_save_max_for_all_months(self, output_directory):
+
+        # Initialize an empty DataFrame to store max values for all months
+        max_values_all_months = pd.DataFrame()
 
         for month in range(1, 13):
             # Filter data for the current month
             monthly_data = self.filter_monthly_data(month)
 
-            # Calculate mean for the current month's data
-            mean_values = self.calculate_mean(monthly_data)
+            # Calculate max for the current month's data
             max_values = self.calculate_max(monthly_data)
-            min_values = self.calculate_min(monthly_data)
-            
-            # Generate the output path for the current month
-            output_path = os.path.join(output_directory, f'mean_values_month_({month})_{months[month-1]}.csv')
-            output_path1 = os.path.join(output_directory, f'max_values_month_({month})_{months[month-1]}.csv')
-            output_path2 = os.path.join(output_directory, f'min_values_month_({month})_{months[month-1]}.csv')
 
-            # Save the mean values to a new CSV file for the current month
-            self.save_to_csv(pd.DataFrame(mean_values).T, output_path)
-            self.save_to_csv(pd.DataFrame(max_values).T, output_path1)
-            self.save_to_csv(pd.DataFrame(min_values).T, output_path2)
-            print(f"Mean values for month {month} saved to {output_path}")
+            # Add the max values for the current month to the combined DataFrame
+            max_values_all_months = max_values_all_months._append(pd.DataFrame(max_values).T)
+
+        # Generate the output path for the combined max values
+        output_path_max_combined = os.path.join(output_directory, 'max_values_combined.csv')
+
+        # Save the combined max values to a CSV file
+        self.save_to_csv(max_values_all_months, output_path_max_combined)
+        print(f"Combined max values for all months saved to {output_path_max_combined}.")
+
+    def calculate_and_save_mean_for_all_months(self, output_directory):
+
+        # Initialize an empty DataFrame to store max values for all months
+        mean_values_all_months = pd.DataFrame()
+
+        for month in range(1, 13):
+            # Filter data for the current month
+            monthly_data = self.filter_monthly_data(month)
+
+            # Calculate max for the current month's data
+            mean_values = self.calculate_mean(monthly_data)
+
+            # Add the max values for the current month to the combined DataFrame
+            mean_values_all_months = mean_values_all_months._append(pd.DataFrame(mean_values).T)
+
+        # Generate the output path for the combined max values
+        output_path_mean_combined = os.path.join(output_directory, 'mean_values_combined.csv')
+
+        # Save the combined max values to a CSV file
+        self.save_to_csv(mean_values_all_months, output_path_mean_combined)
+        print(f"Combined max values for all months saved to {output_path_mean_combined}.")
+
+    def calculate_and_save_min_for_all_months(self, output_directory):
+
+        # Initialize an empty DataFrame to store max values for all months
+        min_values_all_months = pd.DataFrame()
+
+        for month in range(1, 13):
+            # Filter data for the current month
+            monthly_data = self.filter_monthly_data(month)
+
+            # Calculate max for the current month's data
+            min_values = self.calculate_min(monthly_data)
+
+            # Add the max values for the current month to the combined DataFrame
+            min_values_all_months = min_values_all_months._append(pd.DataFrame(min_values).T)
+
+        # Generate the output path for the combined max values
+        output_path_min_combined = os.path.join(output_directory, 'min_values_combined.csv')
+
+        # Save the combined max values to a CSV file
+        self.save_to_csv(min_values_all_months, output_path_min_combined)
+        print(f"Combined max values for all months saved to {output_path_min_combined}.")
 
 # Example usage
 if __name__ == "__main__":
     # Path to the CSV file
-    csv_file_path = '/home/joshlangley/HayleyScripts/kleinplaas.csv'
+
+    location = "kleinplaas"
+    csv_file_path = f'/home/joshlangley/river_CSV_reader/{location}/{location}.csv'
 
     # Instantiate the CSVDataManipulator
     data_manipulator = CSVDataManipulator(csv_file_path)
 
-    # Example: Calculate mean for each month and save to separate CSV files
-    output_directory = 'mean_values_per_month_kleinplaas'
-    data_manipulator.calculate_and_save_mean_for_each_month(output_directory)
+    # Example: Calculate max for each month and save to separate CSV files
+    output_directory = f'{location}'
+    data_manipulator.calculate_and_save_max_for_all_months(output_directory)
+    data_manipulator.calculate_and_save_mean_for_all_months(output_directory)
+    data_manipulator.calculate_and_save_min_for_all_months(output_directory)
