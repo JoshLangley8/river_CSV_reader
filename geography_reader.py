@@ -51,7 +51,7 @@ class CSVDataManipulator:
             max_values_all_months = max_values_all_months._append(pd.DataFrame(max_values).T)
 
         # Generate the output path for the combined max values
-        output_path_max_combined = os.path.join(output_directory, 'max_values_combined.csv')
+        output_path_max_combined = os.path.join(output_directory, 'max_values_combinedEdit.csv')
 
         # Save the combined max values to a CSV file
         self.save_to_csv(max_values_all_months, output_path_max_combined)
@@ -73,7 +73,7 @@ class CSVDataManipulator:
             mean_values_all_months = mean_values_all_months._append(pd.DataFrame(mean_values).T)
 
         # Generate the output path for the combined max values
-        output_path_mean_combined = os.path.join(output_directory, 'mean_values_combined.csv')
+        output_path_mean_combined = os.path.join(output_directory, 'mean_values_combinedEdit.csv')
 
         # Save the combined max values to a CSV file
         self.save_to_csv(mean_values_all_months, output_path_mean_combined)
@@ -95,7 +95,7 @@ class CSVDataManipulator:
             min_values_all_months = min_values_all_months._append(pd.DataFrame(min_values).T)
 
         # Generate the output path for the combined max values
-        output_path_min_combined = os.path.join(output_directory, 'min_values_combined.csv')
+        output_path_min_combined = os.path.join(output_directory, 'min_values_combinedEdit.csv')
 
         # Save the combined max values to a CSV file
         self.save_to_csv(min_values_all_months, output_path_min_combined)
@@ -105,8 +105,8 @@ class CSVDataManipulator:
 if __name__ == "__main__":
     # Path to the CSV file
 
-    location = "kleinplaas"
-    csv_file_path = f'/home/joshlangley/river_CSV_reader/{location}/{location}.csv'
+    location = "faure"
+    csv_file_path = f'/home/joshlangley/river_CSV_reader/{location}/{location}Edited.csv'
 
     # Instantiate the CSVDataManipulator
     data_manipulator = CSVDataManipulator(csv_file_path)
