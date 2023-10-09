@@ -105,7 +105,7 @@ class CSVDataManipulator:
 if __name__ == "__main__":
     # Path to the CSV file
 
-    location = "faure"
+    location = "kleinplaas"
     csv_file_path = f'/home/joshlangley/river_CSV_reader/{location}/{location}Edited.csv'
 
     # Instantiate the CSVDataManipulator
